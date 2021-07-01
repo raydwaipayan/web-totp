@@ -1,24 +1,26 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react';
+import { makeStyles } from '@material-ui/core/styles';
+import { Container } from '@material-ui/core';
+import Navbar from './components/navigation/navbar';
+
+const useStyles = makeStyles((theme) => ({
+  nav: {
+    backgroundColor: theme.palette.primary.main,
+  },
+  app: {
+    backgroundColor: theme.palette.background.main,
+  },
+}));
 
 function App() {
+  const classes = useStyles();
+  document.title = 'Web - TOTP';
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+    <Container className={classes.app}>
+      <header>
+        <Navbar className={classes.nav} />
       </header>
-    </div>
+    </Container>
   );
 }
 
