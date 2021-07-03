@@ -23,12 +23,15 @@ const useStyles = makeStyles((theme) => ({
   logoSecondary: {
     color: theme.palette.primary.dark,
   },
+  text: {
+    textAlign: 'center',
+  },
 }));
 
 export default function Navbar() {
   const classes = useStyles();
   return (
-    <AppBar className={classes.appbar}>
+    <AppBar position="static" className={classes.appbar}>
       <Toolbar className={classes.toolbar}>
         <Box>
           <Typography variant="h4" className={classes.logo}>
@@ -38,7 +41,7 @@ export default function Navbar() {
           </Typography>
         </Box>
         <Box>
-          <Typography variant="h6">
+          <Typography variant="h6" className={classes.text}>
             An open source TOTP Generation tool
           </Typography>
         </Box>

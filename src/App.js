@@ -1,26 +1,38 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import { Container } from '@material-ui/core';
-import Navbar from './components/navigation/navbar';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+} from 'react-router-dom';
+import Layout from './theme/layout/layout';
+import Landing from './pages/landing/landing';
 
 const useStyles = makeStyles((theme) => ({
-  nav: {
-    backgroundColor: theme.palette.primary.main,
-  },
   app: {
     backgroundColor: theme.palette.background.main,
   },
 }));
 
+function CustomRoute({ path, component, exact = true }) {
+  return (
+    <Route exact={exact} path={path}>
+      <Layout>
+        {component}
+      </Layout>
+    </Route>
+  );
+}
+
 function App() {
   const classes = useStyles();
   document.title = 'Web - TOTP';
   return (
-    <Container className={classes.app}>
-      <header>
-        <Navbar className={classes.nav} />
-      </header>
-    </Container>
+    <Router className={classes.app}>
+      <Switch>
+        <CustomRoute path="/" component={<Landing />} />
+      </Switch>
+    </Router>
   );
 }
 
