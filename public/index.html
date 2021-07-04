@@ -30,6 +30,13 @@
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
+    <script src="./totp.js"></script>
+    <script>
+      let generator = null;
+      Module.onRuntimeInitialized = async () => {
+        generator = await Module.cwrap('totp', 'string', ['string']);
+      };
+    </script>
     <div id="root"></div>
     <!--
       This HTML file is a template.
