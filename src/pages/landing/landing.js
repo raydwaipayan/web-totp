@@ -18,6 +18,12 @@ const useStyles = makeStyles((theme) => ({
     border: '1px solid #CCCCCC',
   },
   cell: {
+    cursor: 'pointer',
+    '&:hover': {
+      backgroundColor: theme.palette.background.main,
+    },
+  },
+  borderCell: {
     borderBottom: '1px solid #CCCCCC',
   },
 }));
@@ -31,6 +37,11 @@ export default function Landing() {
       id: '1',
       name: 'TestKey',
     },
+    {
+      secret: 'GEZDGNBVGY3TQOJA',
+      id: '2',
+      name: 'TestKey 2',
+    },
   ];
 
   return (
@@ -38,16 +49,16 @@ export default function Landing() {
       <Container className={classes.root}>
         <Grid container alignItems="center" justify="center">
           <Grid container item xs={12} md={6} className={classes.cellContainer}>
-            <Box className={classes.cellBox} width={1} py={2}>
+            <Box className={classes.cellBox} width={1}>
               {data.map((item, index) => (
-                index === 1
+                index !== (data.length - 1)
                   ? (
-                    <Box className={classes.cell} width={1} py={1}>
+                    <Box py={1} px={1} className={[classes.cell, classes.borderCell]}>
                       <TotpCell secret={item.secret} id={item.id} name={item.name} />
                     </Box>
                   )
                   : (
-                    <Box width={1} py={1}>
+                    <Box py={1} px={1} className={classes.cell}>
                       <TotpCell secret={item.secret} id={item.id} name={item.name} />
                     </Box>
                   )
