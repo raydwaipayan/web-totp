@@ -1,14 +1,11 @@
 import React from 'react';
-import getTotpGenerator from '../../util/getTotpGenerator';
+import TotpCell from '../../components/totpcell/totpcell';
 
 export default function Landing() {
-  const secret = 'ABCDEFGHI';
-  const generator = getTotpGenerator();
-
   return (
     <>
       <div>
-        {typeof generator === 'function' ? generator(secret) : null}
+        <TotpCell secret="GEZDGNBVGY3TQOJQ" id="1" name="Testing" />
       </div>
     </>
   );

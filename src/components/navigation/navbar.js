@@ -17,8 +17,8 @@ const useStyles = makeStyles((theme) => ({
   },
   logo: {
     fontWeight: 'bolder',
-    padding: '2rem',
-    paddingBottom: '0.5rem',
+    padding: theme.spacing(4),
+    paddingBottom: theme.spacing(1),
   },
   logoSecondary: {
     color: theme.palette.primary.dark,

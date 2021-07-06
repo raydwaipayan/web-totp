@@ -34,7 +34,7 @@
     <script>
       let generator = null;
       Module.onRuntimeInitialized = async () => {
-        generator = await Module.cwrap('totp', 'string', ['string']);
+        generator = await Module.cwrap('totp', 'string', ['string', 'number']);
       };
     </script>
     <div id="root"></div>

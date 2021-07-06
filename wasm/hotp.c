@@ -18,6 +18,7 @@
 
 #include "hotp.h"
 #include <stdio.h>
+#include <string.h>
 
 int
 hotp_generate(const char *secret,
@@ -30,7 +31,7 @@ hotp_generate(const char *secret,
     size_t i;
     int rc;
 
-    for (i = 0; i < sizeof(counter); i++)
+    for (i = 0; i < sizeof(moving_factor); i++)
       counter[i] = (moving_factor >> ((sizeof(moving_factor) - i - 1) * 8)) & 0xFF;
 
 	rc = hmac_sha1(secret, secret_len, counter, sizeof(moving_factor), hmac_result);
@@ -38,14 +39,14 @@ hotp_generate(const char *secret,
 	if (rc)
 		return CRYPTO_ERROR;
 
-	int offset   =  hmac_result[19] & 0xf ;
-	long bin_code = (hmac_result[offset]  & 0x7f) << 24
+	int offset   =  hmac_result[19] & 0x0f ;
+	int bin_code = (hmac_result[offset]  & 0x7f) << 24
 		| (hmac_result[offset+1] & 0xff) << 16
 		| (hmac_result[offset+2] & 0xff) <<  8
 		| (hmac_result[offset+3] & 0xff) ;
 
 	bin_code = bin_code % 1000000;
-	sprintf(output_otp, "%06ld", bin_code);
+	sprintf(output_otp, "%06d", bin_code);
     output_otp[6] = '\0';
 
 	return CRYPTO_SUCCESS;
