@@ -22,6 +22,9 @@ const useStyles = makeStyles((theme) => ({
     '&:hover': {
       backgroundColor: theme.palette.background.main,
     },
+    '&:active': {
+      backgroundColor: theme.palette.background.dark,
+    },
   },
   borderCell: {
     borderBottom: '1px solid #CCCCCC',
