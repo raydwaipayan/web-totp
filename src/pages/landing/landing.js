@@ -47,18 +47,18 @@ export default function Landing() {
   return (
     <>
       <Container className={classes.root}>
-        <Grid container alignItems="center" justify="center">
+        <Grid container alignItems="center" justifyContent="center">
           <Grid container item xs={12} md={6} className={classes.cellContainer}>
             <Box className={classes.cellBox} width={1}>
               {data.map((item, index) => (
                 index !== (data.length - 1)
                   ? (
-                    <Box py={1} px={1} className={[classes.cell, classes.borderCell]}>
+                    <Box className={`${classes.cell} ${classes.borderCell}`} key={item.id}>
                       <TotpCell secret={item.secret} id={item.id} name={item.name} />
                     </Box>
                   )
                   : (
-                    <Box py={1} px={1} className={classes.cell}>
+                    <Box className={classes.cell} key={item.id}>
                       <TotpCell secret={item.secret} id={item.id} name={item.name} />
                     </Box>
                   )

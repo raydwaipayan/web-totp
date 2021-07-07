@@ -22,5 +22,6 @@ module.exports = {
     'react/prop-types': [0],
     'no-async-promise-executor': [0],
     'import/prefer-default-export': [0],
+    'react/jsx-props-no-spreading': [0],
   },
 };
