@@ -3,12 +3,10 @@ import Grid from '@material-ui/core/Grid';
 import {
   Container,
   Box,
-  Button,
 } from '@material-ui/core';
-import AddIcon from '@material-ui/icons/Add';
 import { makeStyles } from '@material-ui/core/styles';
-import TotpCell from '../../components/totpcell/totpcell';
-import SearchBar from '../../components/search/searchbar';
+import ShowTotpView from './views/showTotpView';
+import AddTotpView from './views/addTotpView';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -19,31 +17,8 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: '5px',
     padding: theme.spacing(2),
   },
-  cellBox: {
-    borderRadius: '4px',
-    border: '1px solid #CCCCCC',
-    height: '50vh',
-    overflowY: 'scroll',
-  },
-  cell: {
-    cursor: 'pointer',
-    '&:hover': {
-      backgroundColor: theme.palette.background.main,
-    },
-    '&:active': {
-      backgroundColor: theme.palette.background.dark,
-    },
-  },
-  borderCell: {
-    borderBottom: '1px dashed #CCCCCC',
-  },
-  iconButton: {
-    border: '1px solid #CCCCCC',
-    marginBottom: theme.spacing(2),
-  },
-  noItems: {
-    color: theme.palette.secondary.main,
-    textAlign: 'center',
+  contentBox: {
+    height: '60vh',
   },
 }));
 
@@ -60,47 +35,43 @@ const data = [
   },
 ];
 
+const viewTypes = ['show', 'add'];
+
 export default function Landing() {
   const classes = useStyles();
-  const [filter, setFilter] = useState('');
+  const [activeContent, setActiveContent] = useState('show');
 
-  const handleSearchChange = (e) => {
-    const { value } = e.target;
-    setFilter(value.toLowerCase());
+  const handleViewChange = (newType) => {
+    if (!viewTypes.includes(newType)) {
+      return;
+    }
+    setActiveContent(newType);
   };
 
-  const filteredData = data.filter((item) => item.name.toLowerCase().includes(filter));
+  const variableContent = () => {
+    switch (activeContent) {
+      case 'show':
+        return (
+          <ShowTotpView handleViewChange={handleViewChange} data={data} />
+        );
+
+      case 'add':
+        return (
+          <AddTotpView handleViewChange={handleViewChange} />
+        );
+
+      default:
+        return null;
+    }
+  };
 
   return (
     <>
       <Container className={classes.root}>
         <Grid container alignItems="center" justifyContent="center">
           <Grid container item xs={12} md={6} className={classes.cellContainer}>
-            <Grid container className={classes.head}>
-              <Grid item xs={8}>
-                <SearchBar onChange={handleSearchChange} placeholder="Search..." />
-              </Grid>
-              <Grid item xs={4}>
-                <Box display="flex" justifyContent="flex-end">
-                  <Button aria-label="Add" className={classes.iconButton}>
-                    <AddIcon />
-                  </Button>
-                </Box>
-              </Grid>
-            </Grid>
-            <Box className={classes.cellBox} width={1}>
-              { filteredData.length
-                ? filteredData.map((item) => (
-                  <Box className={`${classes.cell} ${classes.borderCell}`} key={item.id}>
-                    <TotpCell secret={item.secret} id={item.id} name={item.name} />
-                  </Box>
-                )) : (
-                  <Box className={classes.noItems} py={1}>
-                    {data.length
-                      ? 'No totp entries found with given filter.'
-                      : 'No shared secrets found.'}
-                  </Box>
-                )}
+            <Box className={classes.contentBox} width={1}>
+              {variableContent()}
             </Box>
           </Grid>
         </Grid>
