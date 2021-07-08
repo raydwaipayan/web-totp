@@ -34,7 +34,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function AddTotpView({ handleViewChange, snackBarOpen }) {
+export default function AddTotpView({ handleViewChange, handleAddCode, snackBarOpen }) {
   const classes = useStyles();
   const [secretText, setSecretText] = useState('');
   const [nameText, setNameText] = useState('');
@@ -73,6 +73,7 @@ export default function AddTotpView({ handleViewChange, snackBarOpen }) {
       return;
     }
 
+    handleAddCode(secretText, nameText);
     handleViewChange('show');
     snackBarOpen('Totp entry added successfully!');
   };

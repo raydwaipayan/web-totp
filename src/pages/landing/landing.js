@@ -5,6 +5,7 @@ import {
   Box,
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
+import useLocalStorageState from 'use-local-storage-state';
 import ShowTotpView from './views/showTotpView';
 import AddTotpView from './views/addTotpView';
 import CustomSnackbar from '../../components/snackbar/snackbar';
@@ -23,19 +24,6 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const data = [
-  {
-    secret: 'GEZDGNBVGY3TQOJQ',
-    id: '1',
-    name: 'TestKey',
-  },
-  {
-    secret: 'GEZDGNBVGY3TQOJA',
-    id: '2',
-    name: 'TestKey 2',
-  },
-];
-
 const viewTypes = ['show', 'add'];
 
 export default function Landing() {
@@ -43,6 +31,20 @@ export default function Landing() {
   const [activeContent, setActiveContent] = useState('show');
   const [snackbarText, setSnackbarText] = useState('');
   const snackbarRef = useRef();
+
+  const [data, setData] = useLocalStorageState('totpData', []);
+
+  const handleAddCode = (code, name) => {
+    setData([...data, {
+      id: code,
+      secret: code,
+      name,
+    }]);
+  };
+
+  const clearAllCodes = () => {
+    setData.reset();
+  };
 
   const handleViewChange = (newType) => {
     if (!viewTypes.includes(newType)) {
@@ -64,6 +66,7 @@ export default function Landing() {
             handleViewChange={handleViewChange}
             data={data}
             snackBarOpen={snackBarOpen}
+            clearAllCodes={clearAllCodes}
           />
         );
 
@@ -71,6 +74,7 @@ export default function Landing() {
         return (
           <AddTotpView
             handleViewChange={handleViewChange}
+            handleAddCode={handleAddCode}
             snackBarOpen={snackBarOpen}
           />
         );

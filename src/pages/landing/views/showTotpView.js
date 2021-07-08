@@ -1,7 +1,13 @@
 import React, { useState } from 'react';
-import Grid from '@material-ui/core/Grid';
-import { Box, Button } from '@material-ui/core';
+import {
+  Box,
+  Button,
+  Menu,
+  MenuItem,
+  Grid,
+} from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
+import SettingsIcon from '@material-ui/icons/Settings';
 import { makeStyles } from '@material-ui/core/styles';
 import SearchBar from '../../../components/search/searchbar';
 import TotpCell from '../../../components/totpcell/totpcell';
@@ -26,8 +32,10 @@ const useStyles = makeStyles((theme) => ({
     borderBottom: '1px dashed #CCCCCC',
   },
   iconButton: {
-    border: '1px solid #CCCCCC',
     marginBottom: theme.spacing(2),
+  },
+  borderButton: {
+    border: '1px solid #CCCCCC',
   },
   noItems: {
     color: theme.palette.secondary.main,
@@ -35,14 +43,24 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function ShowTotpView({ data, handleViewChange, snackBarOpen }) {
+export default function ShowTotpView({
+  data, handleViewChange, clearAllCodes, snackBarOpen,
+}) {
   const classes = useStyles();
-
   const [filter, setFilter] = useState('');
+  const [anchorEl, setAnchorEl] = React.useState(null);
 
   const handleSearchChange = (e) => {
     const { value } = e.target;
     setFilter(value.toLowerCase());
+  };
+
+  const handleMenuClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleMenuClose = () => {
+    setAnchorEl(null);
   };
 
   const filteredData = data.filter((item) => item.name.toLowerCase().includes(filter));
@@ -55,8 +73,34 @@ export default function ShowTotpView({ data, handleViewChange, snackBarOpen }) {
             <SearchBar onChange={handleSearchChange} placeholder="Search..." />
           </Grid>
           <Grid item xs={4}>
-            <Box display="flex" justifyContent="flex-end">
-              <Button aria-label="Add" className={classes.iconButton} onClick={() => handleViewChange('add')}>
+            <Box display="flex" justifyContent="space-around">
+              <Button
+                aria-label="settings"
+                aria-controls="settings-menu"
+                aria-haspopup="true"
+                className={classes.iconButton}
+                onClick={handleMenuClick}
+              >
+                <SettingsIcon />
+              </Button>
+              <Menu
+                id="settings-menu"
+                anchorEl={anchorEl}
+                keepMounted
+                open={Boolean(anchorEl)}
+                onClose={handleMenuClose}
+              >
+                <MenuItem
+                  onClick={() => { clearAllCodes(); handleMenuClose(); }}
+                >
+                  Delete everything
+                </MenuItem>
+              </Menu>
+              <Button
+                aria-label="Add"
+                className={`${classes.iconButton} ${classes.borderButton}`}
+                onClick={() => handleViewChange('add')}
+              >
                 <AddIcon />
               </Button>
             </Box>
