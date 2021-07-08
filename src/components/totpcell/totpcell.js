@@ -1,7 +1,6 @@
 import React, {
   useEffect,
   useState,
-  useRef,
 } from 'react';
 import Grid from '@material-ui/core/Grid';
 import {
@@ -14,7 +13,6 @@ import { VpnKey } from '@material-ui/icons';
 import { makeStyles } from '@material-ui/core/styles';
 import CircularProgressWithLabel from '../progress/circularprogress';
 import getTotpGenerator from '../../util/getTotpGenerator';
-import CustomSnackbar from '../snackbar/snackbar';
 import { unixtime } from '../../util/common';
 
 const useStyles = makeStyles((theme) => ({
@@ -37,14 +35,13 @@ const getT = () => (Math.floor(getTime() / 30));
 const getTotpExpiryTime = () => (getT() * 30 + 30);
 
 export default function TotpCell({
-  id, name, secret,
+  id, name, secret, snackbarOpen,
 }) {
   const classes = useStyles();
   const [totp, setTotp] = useState(0);
   const [t, setT] = useState(0);
   const [expiry, setExpiry] = useState(0);
   const [time, setTime] = useState(getTime());
-  const snackbarRef = useRef(null);
 
   const totpGenerator = getTotpGenerator();
 
@@ -67,7 +64,6 @@ export default function TotpCell({
 
   return (
     <>
-      <CustomSnackbar text="Copied!" variant="success" ref={snackbarRef} />
       <Grid
         container
         className={classes.mainGrid}
@@ -76,7 +72,7 @@ export default function TotpCell({
         alignItems="center"
         onClick={() => {
           navigator.clipboard.writeText(totp.toString())
-            .then(() => snackbarRef.current.handleOpen());
+            .then(() => snackbarOpen('Copied!'));
         }}
       >
         <Grid item xs={2}>

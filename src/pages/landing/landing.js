@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import Grid from '@material-ui/core/Grid';
 import {
   Container,
@@ -7,6 +7,7 @@ import {
 import { makeStyles } from '@material-ui/core/styles';
 import ShowTotpView from './views/showTotpView';
 import AddTotpView from './views/addTotpView';
+import CustomSnackbar from '../../components/snackbar/snackbar';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -40,6 +41,8 @@ const viewTypes = ['show', 'add'];
 export default function Landing() {
   const classes = useStyles();
   const [activeContent, setActiveContent] = useState('show');
+  const [snackbarText, setSnackbarText] = useState('');
+  const snackbarRef = useRef();
 
   const handleViewChange = (newType) => {
     if (!viewTypes.includes(newType)) {
@@ -48,16 +51,28 @@ export default function Landing() {
     setActiveContent(newType);
   };
 
+  const snackBarOpen = (text) => {
+    setSnackbarText(text);
+    snackbarRef.current.handleOpen();
+  };
+
   const variableContent = () => {
     switch (activeContent) {
       case 'show':
         return (
-          <ShowTotpView handleViewChange={handleViewChange} data={data} />
+          <ShowTotpView
+            handleViewChange={handleViewChange}
+            data={data}
+            snackBarOpen={snackBarOpen}
+          />
         );
 
       case 'add':
         return (
-          <AddTotpView handleViewChange={handleViewChange} />
+          <AddTotpView
+            handleViewChange={handleViewChange}
+            snackBarOpen={snackBarOpen}
+          />
         );
 
       default:
@@ -67,6 +82,7 @@ export default function Landing() {
 
   return (
     <>
+      <CustomSnackbar text={snackbarText} variant="success" ref={snackbarRef} />
       <Container className={classes.root}>
         <Grid container alignItems="center" justifyContent="center">
           <Grid container item xs={12} md={6} className={classes.cellContainer}>

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Box, Button, Typography } from '@material-ui/core';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import AddIcon from '@material-ui/icons/Add';
@@ -34,8 +34,39 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function AddTotpView({ handleViewChange }) {
+export default function AddTotpView({ handleViewChange, snackBarOpen }) {
   const classes = useStyles();
+  const [secretText, setSecretText] = useState('');
+  const [nameText, setNameText] = useState('');
+  const [errorSecretText, setErrorSecretText] = useState('');
+
+  const handleSecretTextChange = (e) => {
+    const { value } = e.target;
+    setSecretText(value);
+    if (value.length) {
+      setErrorSecretText('');
+    } else {
+      setErrorSecretText('Shared secret cannot be empty');
+    }
+  };
+
+  const handleNameTextChange = (e) => {
+    const { value } = e.target;
+    setNameText(value);
+  };
+
+  const handleAdd = (e) => {
+    e.preventDefault();
+    if (!secretText.length) {
+      setErrorSecretText('Shared secret cannot be empty');
+      return;
+    }
+    console.log(secretText);
+    console.log(nameText);
+    handleViewChange('show');
+    snackBarOpen('Totp entry added successfully!');
+  };
+
   return (
     <>
       <Box width={1} className={classes.addTotpBox}>
@@ -56,13 +87,23 @@ export default function AddTotpView({ handleViewChange }) {
         <Box p={2}>
           <form autoComplete="off">
             <Box mb={2}>
-              <TextFieldLabelled placeholder="Eg. GEZDGNBVGY3TQOJQ" label="Shared secret: " onChange={() => null} />
+              <TextFieldLabelled
+                error={!!errorSecretText.length}
+                helperText={errorSecretText}
+                placeholder="Eg. GEZDGNBVGY3TQOJQ"
+                label="Shared secret: "
+                onChange={handleSecretTextChange}
+              />
             </Box>
             <Box mb={2}>
-              <TextFieldLabelled placeholder="Eg. My vault key" label="Name: " onChange={() => null} />
+              <TextFieldLabelled
+                placeholder="Eg. My vault key"
+                label="Name: "
+                onChange={handleNameTextChange}
+              />
             </Box>
             <Box className={classes.addBtnBox}>
-              <Button className={classes.addBtn}>
+              <Button className={classes.addBtn} onClick={handleAdd}>
                 <AddIcon />
                 <Typography className={classes.addBtnText}>
                   Add

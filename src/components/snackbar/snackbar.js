@@ -24,7 +24,7 @@ const CustomSnackbar = forwardRef((props, ref) => {
   };
 
   return (
-    <Snackbar open={open} autoHideDuration={1500} onClose={handleClose}>
+    <Snackbar open={open} autoHideDuration={2000} onClose={handleClose}>
       <Alert onClose={handleClose} severity={variant}>
         {text}
       </Alert>

@@ -35,7 +35,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function ShowTotpView({ data, handleViewChange }) {
+export default function ShowTotpView({ data, handleViewChange, snackBarOpen }) {
   const classes = useStyles();
 
   const [filter, setFilter] = useState('');
@@ -66,7 +66,12 @@ export default function ShowTotpView({ data, handleViewChange }) {
           { filteredData.length
             ? filteredData.map((item) => (
               <Box className={`${classes.cell} ${classes.borderCell}`} key={item.id}>
-                <TotpCell secret={item.secret} id={item.id} name={item.name} />
+                <TotpCell
+                  secret={item.secret}
+                  id={item.id}
+                  name={item.name}
+                  snackbarOpen={snackBarOpen}
+                />
               </Box>
             )) : (
               <Box className={classes.noItems} py={1}>
