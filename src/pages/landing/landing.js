@@ -1,15 +1,14 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Grid from '@material-ui/core/Grid';
 import {
   Container,
   Box,
   Button,
-  InputBase,
 } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
-import SearchIcon from '@material-ui/icons/Search';
-import { alpha, makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import TotpCell from '../../components/totpcell/totpcell';
+import SearchBar from '../../components/search/searchbar';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -42,52 +41,35 @@ const useStyles = makeStyles((theme) => ({
     border: '1px solid #CCCCCC',
     marginBottom: theme.spacing(2),
   },
-  search: {
-    position: 'absolute',
-    borderRadius: theme.shape.borderRadius,
-    backgroundColor: alpha(theme.palette.secondary.main, 0.15),
-    '&:hover': {
-      backgroundColor: alpha(theme.palette.secondary.main, 0.25),
-    },
-    marginRight: theme.spacing(2),
-    marginLeft: 0,
-    width: 'auto',
-  },
-  searchIcon: {
-    padding: theme.spacing(0, 2),
-    height: '100%',
-    position: 'absolute',
-    pointerEvents: 'none',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  inputInput: {
-    padding: theme.spacing(1, 1, 1, 0),
-    paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
-    transition: theme.transitions.create('width'),
-    width: '100%',
-    [theme.breakpoints.up('md')]: {
-      width: '20ch',
-    },
+  noItems: {
+    color: theme.palette.secondary.main,
+    textAlign: 'center',
   },
 }));
 
+const data = [
+  {
+    secret: 'GEZDGNBVGY3TQOJQ',
+    id: '1',
+    name: 'TestKey',
+  },
+  {
+    secret: 'GEZDGNBVGY3TQOJA',
+    id: '2',
+    name: 'TestKey 2',
+  },
+];
+
 export default function Landing() {
   const classes = useStyles();
+  const [filter, setFilter] = useState('');
 
-  const data = [
-    {
-      secret: 'GEZDGNBVGY3TQOJQ',
-      id: '1',
-      name: 'TestKey',
-    },
-    {
-      secret: 'GEZDGNBVGY3TQOJA',
-      id: '2',
-      name: 'TestKey 2',
-    },
-  ];
+  const handleSearchChange = (e) => {
+    const { value } = e.target;
+    setFilter(value.toLowerCase());
+  };
+
+  const filteredData = data.filter((item) => item.name.toLowerCase().includes(filter));
 
   return (
     <>
@@ -96,20 +78,7 @@ export default function Landing() {
           <Grid container item xs={12} md={6} className={classes.cellContainer}>
             <Grid container className={classes.head}>
               <Grid item xs={8}>
-                <Box>
-                  <div className={classes.search}>
-                    <div className={classes.searchIcon}>
-                      <SearchIcon />
-                    </div>
-                    <InputBase
-                      placeholder="Search…"
-                      classes={{
-                        input: classes.inputInput,
-                      }}
-                      inputProps={{ 'aria-label': 'search' }}
-                    />
-                  </div>
-                </Box>
+                <SearchBar onChange={handleSearchChange} placeholder="Search..." />
               </Grid>
               <Grid item xs={4}>
                 <Box display="flex" justifyContent="flex-end">
@@ -120,11 +89,18 @@ export default function Landing() {
               </Grid>
             </Grid>
             <Box className={classes.cellBox} width={1}>
-              {data.map((item) => (
-                <Box className={`${classes.cell} ${classes.borderCell}`} key={item.id}>
-                  <TotpCell secret={item.secret} id={item.id} name={item.name} />
-                </Box>
-              ))}
+              { filteredData.length
+                ? filteredData.map((item) => (
+                  <Box className={`${classes.cell} ${classes.borderCell}`} key={item.id}>
+                    <TotpCell secret={item.secret} id={item.id} name={item.name} />
+                  </Box>
+                )) : (
+                  <Box className={classes.noItems} py={1}>
+                    {data.length
+                      ? 'No totp entries found with given filter.'
+                      : 'No shared secrets found.'}
+                  </Box>
+                )}
             </Box>
           </Grid>
         </Grid>
