@@ -39,6 +39,7 @@ export default function AddTotpView({ handleViewChange, snackBarOpen }) {
   const [secretText, setSecretText] = useState('');
   const [nameText, setNameText] = useState('');
   const [errorSecretText, setErrorSecretText] = useState('');
+  const [errorNameText, setErrorNameText] = useState('');
 
   const handleSecretTextChange = (e) => {
     const { value } = e.target;
@@ -53,16 +54,25 @@ export default function AddTotpView({ handleViewChange, snackBarOpen }) {
   const handleNameTextChange = (e) => {
     const { value } = e.target;
     setNameText(value);
+    if (value.length) {
+      setErrorNameText('');
+    } else {
+      setErrorNameText('Name cannot be empty');
+    }
   };
 
   const handleAdd = (e) => {
     e.preventDefault();
-    if (!secretText.length) {
-      setErrorSecretText('Shared secret cannot be empty');
+    if (!secretText.length || !nameText.length) {
+      if (!secretText.length) {
+        setErrorSecretText('Shared secret cannot be empty');
+      }
+      if (!nameText.length) {
+        setErrorNameText('Name cannot be empty');
+      }
       return;
     }
-    console.log(secretText);
-    console.log(nameText);
+
     handleViewChange('show');
     snackBarOpen('Totp entry added successfully!');
   };
@@ -97,6 +107,8 @@ export default function AddTotpView({ handleViewChange, snackBarOpen }) {
             </Box>
             <Box mb={2}>
               <TextFieldLabelled
+                error={!!errorNameText.length}
+                helperText={errorNameText}
                 placeholder="Eg. My vault key"
                 label="Name: "
                 onChange={handleNameTextChange}
