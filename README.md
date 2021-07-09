@@ -1,7 +1,7 @@
 ## Web - TOTP
+![deploy workflow](https://github.com/raydwaipayan/web-totp/actions/workflows/deploy.yml/badge.svg)
 
 A Totp generation react web application with WebAssembly hooks.
-
 ### Table of Contents
 - [Introduction](#introduction)
 - [Build Process](#build)
@@ -21,7 +21,7 @@ The wasm binaries are already compiled and stored in the public
 folder. So it just requires you to install the npm modules:
 
 ```bash
-npm start
+npm install
 ```
 
 However, if you want to modify the wasm, you first need to
