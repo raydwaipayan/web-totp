@@ -27,12 +27,12 @@ hotp_generate(const char *secret,
 			  char *output_otp)
 {
 	char hmac_result[SHA1_DIGEST_SIZE];
-    char counter[sizeof(moving_factor)];
-    size_t i;
-    int rc;
+	char counter[sizeof(moving_factor)];
+	size_t i;
+	int rc;
 
-    for (i = 0; i < sizeof(moving_factor); i++)
-      counter[i] = (moving_factor >> ((sizeof(moving_factor) - i - 1) * 8)) & 0xFF;
+	for (i = 0; i < sizeof(moving_factor); i++)
+	  counter[i] = (moving_factor >> ((sizeof(moving_factor) - i - 1) * 8)) & 0xFF;
 
 	rc = hmac_sha1(secret, secret_len, counter, sizeof(moving_factor), hmac_result);
 
@@ -47,7 +47,7 @@ hotp_generate(const char *secret,
 
 	bin_code = bin_code % 1000000;
 	sprintf(output_otp, "%06d", bin_code);
-    output_otp[6] = '\0';
+	output_otp[6] = '\0';
 
 	return CRYPTO_SUCCESS;
 }
