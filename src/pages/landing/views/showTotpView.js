@@ -67,10 +67,12 @@ export default function ShowTotpView({
 
   return (
     <>
-      <Box width={1}>
+      <div>
         <Grid container>
           <Grid item xs={8}>
-            <SearchBar onChange={handleSearchChange} placeholder="Search..." />
+            <div>
+              <SearchBar onChange={handleSearchChange} placeholder="Search..." />
+            </div>
           </Grid>
           <Grid item xs={4}>
             <Box display="flex" justifyContent="space-around">
@@ -125,7 +127,7 @@ export default function ShowTotpView({
               </Box>
             )}
         </Box>
-      </Box>
+      </div>
     </>
   );
 }

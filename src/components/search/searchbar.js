@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, InputBase, makeStyles } from '@material-ui/core';
+import { InputBase, makeStyles } from '@material-ui/core';
 import SearchIcon from '@material-ui/icons/Search';
 import { alpha } from '@material-ui/core/styles';
 
@@ -13,7 +13,10 @@ const useStyles = makeStyles((theme) => ({
     },
     marginRight: theme.spacing(2),
     marginLeft: 0,
-    width: 'auto',
+    width: '50%',
+    [theme.breakpoints.up('sm')]: {
+      width: '24ch',
+    },
   },
   searchIcon: {
     padding: theme.spacing(0, 2),
@@ -28,8 +31,8 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(1, 1, 1, 0),
     paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
     transition: theme.transitions.create('width'),
-    width: '100%',
-    [theme.breakpoints.up('md')]: {
+    width: '50%',
+    [theme.breakpoints.up('sm')]: {
       width: '20ch',
     },
   },
@@ -38,20 +41,18 @@ const useStyles = makeStyles((theme) => ({
 export default function SearchBar({ placeholder, onChange }) {
   const classes = useStyles();
   return (
-    <Box>
-      <div className={classes.search}>
-        <div className={classes.searchIcon}>
-          <SearchIcon />
-        </div>
-        <InputBase
-          placeholder={placeholder}
-          classes={{
-            input: classes.inputInput,
-          }}
-          inputProps={{ 'aria-label': 'search' }}
-          onChange={onChange}
-        />
+    <div className={classes.search}>
+      <div className={classes.searchIcon}>
+        <SearchIcon />
       </div>
-    </Box>
+      <InputBase
+        placeholder={placeholder}
+        classes={{
+          input: classes.inputInput,
+        }}
+        inputProps={{ 'aria-label': 'search' }}
+        onChange={onChange}
+      />
+    </div>
   );
 }

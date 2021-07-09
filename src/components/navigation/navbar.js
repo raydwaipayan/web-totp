@@ -42,7 +42,7 @@ export default function Navbar() {
         </Box>
         <Box>
           <Typography variant="h6" className={classes.text}>
-            An open source TOTP Generation tool
+            An open source TOTP generator
           </Typography>
         </Box>
       </Toolbar>
