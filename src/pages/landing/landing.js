@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(2),
   },
   contentBox: {
-    height: '60vh',
+    height: '32rem',
   },
 }));
 

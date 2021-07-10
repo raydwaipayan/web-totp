@@ -16,7 +16,7 @@ const useStyles = makeStyles((theme) => ({
   cellBox: {
     borderRadius: '4px',
     border: '1px solid #CCCCCC',
-    height: '50vh',
+    height: '28rem',
     overflowY: 'scroll',
   },
   cell: {
